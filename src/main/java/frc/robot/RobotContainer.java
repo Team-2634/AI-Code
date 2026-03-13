@@ -19,8 +19,10 @@ import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 import frc.robot.generated.TunerConstants;
+//import frc.robot.subsystems.CommandShooter;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class RobotContainer {
 
@@ -40,12 +42,12 @@ public class RobotContainer {
 
     private final CommandXboxController joystick = new CommandXboxController(0);
 
-    public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+    public final static CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
-    private final SendableChooser<Command> m_chooser = new SendableChooser<>();
+//    private final SendableChooser<Command> m_chooser = new SendableChooser<>();
 
     public RobotContainer() {
-        m_chooser.setDefaultOption("Testing Auto", getAutonomousCommand());
+        //m_chooser.setDefaultOption("Testing Auto", getAutonomousCommand());
 
         configureBindings();
     }
@@ -88,7 +90,10 @@ public class RobotContainer {
         drivetrain.registerTelemetry(logger::telemeterize);
     }
 
-    public Command getAutonomousCommand() {
+    public Command getAutonomousDriveCommand() {
+        SmartDashboard.putString("status", "running");
+        System.out.print("[DEBUG] autonomous init ran.");
+
         // Simple drive forward auton
         final var idle = new SwerveRequest.Idle();
         return Commands.sequence(
@@ -97,15 +102,21 @@ public class RobotContainer {
             drivetrain.runOnce(() -> drivetrain.seedFieldCentric(Rotation2d.kZero)),
             // Then slowly drive forward (away from us) for 5 seconds.
             drivetrain.applyRequest(() ->
-                drive.withVelocityX(0.5)
-                    .withVelocityY(0)
-                    .withRotationalRate(0)
+                drive.withVelocityX(0.5 /* * MaxSpeed */)
+                    .withVelocityY(0 /* * MaxSpeed */)
+                    .withRotationalRate(0 * MaxAngularRate)
             )
             .withTimeout(5.0),
             // Finally idle for the rest of auton
             drivetrain.applyRequest(() -> idle)
         );
-
-        
+            
     }
+/* 
+    public Command autoShooter() {
+        return Commands.sequence(
+            Shooter.shooterFowardcustom(0.5)    
+            );
+
+        }*/
 }
