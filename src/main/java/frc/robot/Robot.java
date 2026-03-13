@@ -25,9 +25,6 @@ public class Robot extends TimedRobot {
     private final Pigeon2 mainGryo = new Pigeon2(0);
     private final XboxController Controller1 = new XboxController(0);
 
-
-
-    
     private final HootAutoReplay m_timeAndJoystickReplay = new HootAutoReplay()
         .withTimestampReplay()
         .withJoystickReplay();
@@ -57,14 +54,14 @@ public class Robot extends TimedRobot {
         
 
         if (m_autonomousCommand != null) {
-            CommandScheduler.getInstance().schedule(m_autonomousCommand);
+            CommandScheduler.getInstance().schedule();
         }
     }
 
     @Override
     public void autonomousPeriodic() {
-         CommandScheduler.getInstance().run();
-}
+        
+    }
 
     @Override
     public void autonomousExit() {}
