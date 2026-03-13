@@ -6,6 +6,8 @@ package frc.robot;
 
 import com.ctre.phoenix6.HootAutoReplay;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants.DriveMotorArrangement;
+import com.ctre.phoenix6.hardware.Pigeon2;
+import com.ctre.phoenix6.hardware.Pigeon2.*;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
@@ -18,7 +20,7 @@ public class Robot extends TimedRobot {
     private final RobotContainer m_robotContainer;
 
 
-
+    private final Pigeon2 mainGryo = new Pigeon2(0);
     private final XboxController Controller1 = new XboxController(0);
 
 
