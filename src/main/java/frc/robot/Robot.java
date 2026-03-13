@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import javax.sound.midi.Sequence;
+
 import com.ctre.phoenix6.HootAutoReplay;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants.DriveMotorArrangement;
 import com.ctre.phoenix6.hardware.Pigeon2;
@@ -52,6 +54,7 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
         m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+        
 
         if (m_autonomousCommand != null) {
             CommandScheduler.getInstance().schedule(m_autonomousCommand);
@@ -60,9 +63,8 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousPeriodic() {
-
-        CommandScheduler.getInstance().run();
-    }
+         CommandScheduler.getInstance().run();
+}
 
     @Override
     public void autonomousExit() {}
@@ -77,21 +79,27 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
 
-        if (Controller1.getAButton()){
-      Shooter.shooterFoward();
-    }    
-    else if (Controller1.getAButtonReleased()){
-      Shooter.shooterStop();
+         if (Controller1.getLeftTriggerAxis() > 0.5){
+      Shooter.shooterFowardSlow();
+    }   
+      else if (Controller1.getRightTriggerAxis() > 0.5){
+      Shooter.shooterFowardFast();
+    }   
+
+    else {
+        Shooter.shooterStop();
     }
 
+
+    
 
     if (Controller1.getXButtonPressed()){
       Intake.intakeFoward();
     }
+
     else if(Controller1.getXButtonReleased()){
       Intake.intakeStop();
     }
-
     }
 
     @Override
