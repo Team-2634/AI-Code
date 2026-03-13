@@ -8,10 +8,14 @@ public class Shooter {
     public static TalonFX shooterMotor1 = new TalonFX(10);
     public static TalonFX shooterMotor2 = new TalonFX(11);
 
-
-    public static void shooterFoward(){
+    public static void shooterFoward(){ // default launcher speed
         shooterMotor1.set(0.75);
         shooterMotor2.set(0.75);
+    }
+    
+    public static void shooterFoward(double speed){ // custom launcher speed
+        shooterMotor1.set(speed);
+        shooterMotor2.set(speed);
     }
 
     public static void shooterStop(){
