@@ -17,13 +17,8 @@ public class Robot extends TimedRobot {
 
     private final RobotContainer m_robotContainer;
 
-
-
     private final XboxController Controller1 = new XboxController(0);
 
-
-
-    
     private final HootAutoReplay m_timeAndJoystickReplay = new HootAutoReplay()
         .withTimestampReplay()
         .withJoystickReplay();
@@ -52,14 +47,13 @@ public class Robot extends TimedRobot {
         m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
         if (m_autonomousCommand != null) {
-            CommandScheduler.getInstance().schedule(m_autonomousCommand);
+            CommandScheduler.getInstance().schedule();
         }
     }
 
     @Override
     public void autonomousPeriodic() {
-
-        CommandScheduler.getInstance().run();
+        
     }
 
     @Override
