@@ -85,7 +85,7 @@ public class Robot extends TimedRobot {
       else if (Controller1.getRightTriggerAxis() > 0.5){
       Shooter.shooterFowardFast();
     }   
-
+    
     else {
         Shooter.shooterStop();
     }
