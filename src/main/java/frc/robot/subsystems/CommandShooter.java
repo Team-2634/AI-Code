@@ -6,7 +6,11 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Shooter;
 
 public class CommandShooter implements Subsystem   {
-    public static Command test(double speed) {
+    public static Command autoShoot(double speed) {
         return Commands.run(() -> Shooter.shooterForwardcustom(speed));
+    }
+
+    public static Command autoShoot() {
+        return Commands.run(() -> Shooter.shooterForwardFast());
     }
 }

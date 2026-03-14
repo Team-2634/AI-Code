@@ -11,6 +11,7 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 import frc.robot.Robot;
 
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.internal.DriverStationModeThread;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -98,7 +99,7 @@ public class RobotContainer {
 
     // AUTO CODE FUNCTIONS
 
-    public Command getAutonomousDriveCommand() {
+    public Command getAutonomousDriveCommand() { // basic driving auto
         SmartDashboard.putString("status", "running");
         System.out.print("[DEBUG] autonomous init ran.");
 
@@ -121,18 +122,54 @@ public class RobotContainer {
             
     }
  
-    public Command autoShooter(double speed) {
+    public Command autoShooter(double speed) { // basic shooter motor
         return Commands.sequence(     
-            CommandShooter.test(speed)
+            CommandShooter.autoShoot(speed)
             .withTimeout(5.0),
-            CommandShooter.test(0)
+            CommandShooter.autoShoot(0)
         );        
     }
 
-    public Command autoIntake(){
+    public Command autoIntake(){ // basic intake motor auto
         return Commands.sequence(
             CommandIntake.runIntakeMotor().withTimeout(5.0),
             CommandIntake.stopIntakeMotor()
         );
     }
+
+    // Bot is placed at the left start, # degrees right of the wall.
+    public Command autoCommandLeftSpawn(){ 
+            return Commands.sequence( 
+              drivetrain.applyRequest(() -> // The first drive command towards us
+                drive.withVelocityX(0.25)
+                     .withVelocityY(0.25)
+              ).withTimeout(3),
+
+              drivetrain.applyRequest(() -> // The second drive command away from the wall
+                drive.withVelocityX(-0.25)
+                     .withVelocityY(-0.25)
+              ).withTimeout(3),
+
+              CommandShooter.autoShoot(0.25).withTimeout(5.0), // launch balls (TODO: limelight to give accurate shooting)
+
+            drivetrain.applyRequest(() -> // realign robt with ramp
+              drive.withRotationalRate(0.25)
+            ).withTimeout(5),
+
+            drivetrain.applyRequest(() -> // drive onto the ramp and field
+              drive.withVelocityX(0.25)
+                   .withVelocityY(0)
+            ).withTimeout(5)
+        );
+    }
+/*
+    public Command autoCommandRightSpawn(){
+
+    }
+
+    public Command autoCommandCenterSpawn(){
+
+    }
+
+*/
 }
