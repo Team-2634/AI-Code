@@ -54,7 +54,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
-        m_autonomousCommand = m_robotContainer.autoShooter(0.75);
+        m_autonomousCommand = m_robotContainer.autoCommandLeftSpawn();
         
 
         if (m_autonomousCommand != null) {

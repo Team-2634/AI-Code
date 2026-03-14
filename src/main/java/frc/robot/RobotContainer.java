@@ -9,7 +9,7 @@ import static edu.wpi.first.units.Units.*;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import frc.robot.Robot;
-
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.internal.DriverStationModeThread;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -139,10 +139,15 @@ public class RobotContainer {
 
     // Bot is placed at the left start, # degrees right of the wall.
     public Command autoCommandLeftSpawn(){ 
+            SmartDashboard.putString("AutoSequence","LeftSpawn");
+
             return Commands.sequence( 
+                drivetrain.runOnce(() -> drivetrain.seedFieldCentric(Rotation2d.kZero)),
+
               drivetrain.applyRequest(() -> // The first drive command towards us
                 drive.withVelocityX(0.25)
                      .withVelocityY(0.25)
+                     .withRotationalRate(0)
               ).withTimeout(3),
 
               drivetrain.applyRequest(() -> // The second drive command away from the wall
@@ -152,15 +157,17 @@ public class RobotContainer {
 
               CommandShooter.autoShoot(0.25).withTimeout(5.0), // launch balls (TODO: limelight to give accurate shooting)
 
-            drivetrain.applyRequest(() -> // realign robt with ramp
-              drive.withRotationalRate(0.25)
-            ).withTimeout(5),
+              drivetrain.applyRequest(() -> // realign robt with ramp
+                drive.withRotationalRate(0.25)
+              ).withTimeout(5),
 
-            drivetrain.applyRequest(() -> // drive onto the ramp and field
-              drive.withVelocityX(0.25)
-                   .withVelocityY(0)
-            ).withTimeout(5)
+              drivetrain.applyRequest(() -> // drive onto the ramp and field
+                drive.withVelocityX(0.25)
+                  .withVelocityY(0)
+              ).withTimeout(5)
+            
         );
+        
     }
 /*
     public Command autoCommandRightSpawn(){
