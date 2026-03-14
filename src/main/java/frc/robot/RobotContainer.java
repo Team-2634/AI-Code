@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.CommandShooter;
 //import frc.robot.subsystems.CommandShooter;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -43,7 +44,6 @@ public class RobotContainer {
     private final CommandXboxController joystick = new CommandXboxController(0);
 
     public final static CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
-
 //    private final SendableChooser<Command> m_chooser = new SendableChooser<>();
 
     public RobotContainer() {
@@ -84,9 +84,13 @@ public class RobotContainer {
         joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
         // Reset the field-centric heading on left bumper press.
-        if(Controller1.getLeftBumperButtonPressed()){
-            drivetrain.runOnce(drivetrain::seedFieldCentric);
-        }
+        joystick.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
+        // if(joystick.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric))){
+            // SmartDashboard.putBoolean("Mark", true); 
+            // drivetrain.runOnce(drivetrain::seedFieldCentric);
+            // SmartDashboard.putBoolean("Mark2", true); 
+
+        // }
         drivetrain.registerTelemetry(logger::telemeterize);
     }
 
@@ -102,21 +106,21 @@ public class RobotContainer {
             drivetrain.runOnce(() -> drivetrain.seedFieldCentric(Rotation2d.kZero)),
             // Then slowly drive forward (away from us) for 5 seconds.
             drivetrain.applyRequest(() ->
-                drive.withVelocityX(0.5 /* * MaxSpeed */)
+                drive.withVelocityX(-0.5 /* * MaxSpeed */)
                     .withVelocityY(0 /* * MaxSpeed */)
                     .withRotationalRate(0 * MaxAngularRate)
             )
-            .withTimeout(5.0),
+            .withTimeout(0.5),
             // Finally idle for the rest of auton
             drivetrain.applyRequest(() -> idle)
         );
             
     }
-/* 
-    public Command autoShooter() {
+ 
+    public Command autoShooter(double speed) {
         return Commands.sequence(
-            Shooter.shooterFowardcustom(0.5)    
-            );
-
-        }*/
+             CommandShooter.test(0.5).withTimeout(5.0),
+             CommandShooter.test(0)
+        );        
+    }
 }

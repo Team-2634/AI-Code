@@ -57,7 +57,7 @@ public class Robot extends TimedRobot {
         
 
         if (m_autonomousCommand != null) {
-            CommandScheduler.getInstance().schedule();
+            m_autonomousCommand.schedule();
             SmartDashboard.putString("run","code is running");
             System.out.print("[DEBUG] autonomous init starting.");
 
