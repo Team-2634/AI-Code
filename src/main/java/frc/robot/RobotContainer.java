@@ -85,6 +85,7 @@ public class RobotContainer {
 
         // Reset the field-centric heading on left bumper press.
         joystick.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
+
         // if(joystick.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric))){
             // SmartDashboard.putBoolean("Mark", true); 
             // drivetrain.runOnce(drivetrain::seedFieldCentric);
@@ -119,7 +120,7 @@ public class RobotContainer {
  
     public Command autoShooter(double speed) {
         return Commands.sequence(
-             CommandShooter.test(0.5).withTimeout(5.0),
+             CommandShooter.test(speed).withTimeout(5.0),
              CommandShooter.test(0)
         );        
     }

@@ -11,7 +11,8 @@ import com.ctre.phoenix6.swerve.SwerveModuleConstants.DriveMotorArrangement;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.hardware.Pigeon2.*;
 import frc.robot.*;
-
+import frc.robot.subsystems.CommandSwerveDrivetrain;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
@@ -53,7 +54,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
-        m_autonomousCommand = m_robotContainer.getAutonomousDriveCommand();
+        m_autonomousCommand = m_robotContainer.autoShooter(0.75);
         
 
         if (m_autonomousCommand != null) {
@@ -77,7 +78,8 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
-        
+    RobotContainer.drivetrain.seedFieldCentric(Rotation2d.kZero);    
+    //RobotContainer.drivetrain.runOnce(RobotContainer.drivetrain::seedFieldCentric);
         if (m_autonomousCommand != null) {
             CommandScheduler.getInstance().cancel(m_autonomousCommand);
         }
