@@ -92,18 +92,15 @@ public class Robot extends TimedRobot {
       Shooter.shooterForwardSlow();
     }   
       else if (Controller1.getRightTriggerAxis() > 0.5){
-      Shooter.shooterFowardFast();
+      Shooter.shooterForwardFast();
     }   
 
     else {
         Shooter.shooterStop();
     }
 
-
-    
-
     if (Controller1.getXButtonPressed()){
-      Intake.intakeFoward();
+      Intake.intakeForward();
     }
 
     else if(Controller1.getXButtonReleased()){

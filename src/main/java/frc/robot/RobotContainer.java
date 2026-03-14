@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.CommandIntake;
 import frc.robot.subsystems.CommandShooter;
 //import frc.robot.subsystems.CommandShooter;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -95,6 +96,8 @@ public class RobotContainer {
         drivetrain.registerTelemetry(logger::telemeterize);
     }
 
+    // AUTO CODE FUNCTIONS
+
     public Command getAutonomousDriveCommand() {
         SmartDashboard.putString("status", "running");
         System.out.print("[DEBUG] autonomous init ran.");
@@ -119,9 +122,17 @@ public class RobotContainer {
     }
  
     public Command autoShooter(double speed) {
-        return Commands.sequence(
-             CommandShooter.test(speed).withTimeout(5.0),
-             CommandShooter.test(0)
+        return Commands.sequence(     
+            CommandShooter.test(speed)
+            .withTimeout(5.0),
+            CommandShooter.test(0)
         );        
+    }
+
+    public Command autoIntake(){
+        return Commands.sequence(
+            CommandIntake.runIntakeMotor().withTimeout(5.0),
+            CommandIntake.stopIntakeMotor()
+        );
     }
 }

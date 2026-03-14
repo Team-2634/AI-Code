@@ -7,6 +7,6 @@ import frc.robot.Shooter;
 
 public class CommandShooter implements Subsystem   {
     public static Command test(double speed) {
-        return Commands.run(() -> Shooter.shooterFowardcustom(speed));
+        return Commands.run(() -> Shooter.shooterForwardcustom(speed));
     }
 }
