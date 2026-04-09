@@ -19,8 +19,6 @@ import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 import frc.robot.generated.TunerConstants;
-import frc.robot.subsystems.CommandShooter;
-//import frc.robot.subsystems.CommandShooter;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -117,11 +115,5 @@ public class RobotContainer {
         );
             
     }
- 
-    public Command autoShooter(double speed) {
-        return Commands.sequence(
-             CommandShooter.test(speed).withTimeout(5.0),
-             CommandShooter.test(0)
-        );        
-    }
 }
+ 
