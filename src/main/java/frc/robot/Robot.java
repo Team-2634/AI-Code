@@ -4,10 +4,6 @@
 
 package frc.robot;
 
-<<<<<<< Updated upstream
-=======
-import java.lang.ModuleLayer.Controller;
->>>>>>> Stashed changes
 import javax.sound.midi.Sequence;
 import com.ctre.phoenix6.HootAutoReplay;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants.DriveMotorArrangement;
