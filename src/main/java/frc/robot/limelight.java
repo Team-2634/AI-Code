@@ -5,8 +5,9 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 
 public class limelight {
 
-    double CAMERA_MOUNT_HEIGHT = 0.0; // The height of the camera from the ground (inches)
-    double CAMERA_MOUNT_ANGLE = 0.0; // The angle at which the camera is mounted (degrees)
+    static double CAMERA_MOUNT_HEIGHT = 18.5; // The height of the camera from the ground (inches)
+    static double CAMERA_MOUNT_Y_OFFSET = 4.5; // Y offset of camera from center of robot (inches)
+    static double CAMERA_MOUNT_ANGLE = 0.0; // The angle at which the camera is mounted (degrees)
 
     public static double getX() { // Get the horizontal offset from the crosshair to the target
         return LimelightHelpers.getTX("limelight");
@@ -27,14 +28,19 @@ public class limelight {
     public static double getArea() { // Get the area the target covers in the camera's field of view
         return LimelightHelpers.getTA("limelight");
     }
-    
 
-    public static void robotX(){
-
+    public static double robotX(){
+        return robotY() * (Math.tan(getXNC() * (Math.PI/180)));
     }
 
-    public static void robotY(){
+    public static double robotY(){
+        return (limelightTagData.getTagHeight(getTagId()) - CAMERA_MOUNT_HEIGHT) / (Math.tan(getYNC() * (Math.PI/180))) + CAMERA_MOUNT_Y_OFFSET;
+    }
 
+    public static double[] RobotXY(){
+        double y = (limelightTagData.getTagHeight(getTagId()) - CAMERA_MOUNT_HEIGHT) / (Math.tan(getYNC() * (Math.PI/180))) + CAMERA_MOUNT_Y_OFFSET;
+        double x = y * (Math.tan(getXNC() * (Math.PI/180)));
+        return new double[]{x, y};
     }
 
     private static final NetworkTable limelight = 
@@ -51,7 +57,8 @@ public class limelight {
             " Y: " + getY() + 
             " XNC: " + getXNC() + 
             " YNC: " + getYNC() + 
-            " Area: " + getArea()
+            " Area: " + getArea() +
+            " Position " + RobotXY()
             );
     }
 }
