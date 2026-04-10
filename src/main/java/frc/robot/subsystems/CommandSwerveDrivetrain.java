@@ -11,6 +11,8 @@ import com.ctre.phoenix6.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
+import edu.wpi.first.hal.AllianceStationID;
+import edu.wpi.first.hal.DriverStationJNI;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -39,11 +41,11 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     private double m_lastSimTime;
 
     /* Blue alliance sees forward as 0 degrees (toward red alliance wall) */
-    private static final Rotation2d kBlueAlliancePerspectiveRotation = Rotation2d.kZero;
+    public static final Rotation2d kBlueAlliancePerspectiveRotation = Rotation2d.kZero;
     /* Red alliance sees forward as 180 degrees (toward blue alliance wall) */
-    private static final Rotation2d kRedAlliancePerspectiveRotation = Rotation2d.k180deg;
+    public static final Rotation2d kRedAlliancePerspectiveRotation = Rotation2d.k180deg;
     /* Keep track if we've ever applied the operator perspective before or not */
-    private boolean m_hasAppliedOperatorPerspective = false;
+    public static boolean m_hasAppliedOperatorPerspective = false;
 
     /* Swerve requests to apply during SysId characterization */
     private final SwerveRequest.SysIdSwerveTranslation m_translationCharacterization = new SwerveRequest.SysIdSwerveTranslation();
@@ -220,6 +222,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         return m_sysIdRoutineToApply.dynamic(direction);
     }
 
+
+
     @Override
     public void periodic() {
         /*
@@ -231,16 +235,29 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
          */
 
         if (!m_hasAppliedOperatorPerspective || DriverStation.isDisabled()) {
-            DriverStation.getAlliance().ifPresent(allianceColor -> {
-                setOperatorPerspectiveForward(
-                    allianceColor == Alliance.Red
-                        ? kRedAlliancePerspectiveRotation
-                        : kBlueAlliancePerspectiveRotation
-                );
+            
+            
+
+            if (DriverStationJNI.getAllianceStation() == AllianceStationID.Red1 || DriverStationJNI.getAllianceStation() == AllianceStationID.Red2 || DriverStationJNI.getAllianceStation() == AllianceStationID.Red3){
+                seedFieldCentric(kRedAlliancePerspectiveRotation);
+            }
+
+            else if (DriverStationJNI.getAllianceStation() == AllianceStationID.Blue1 || DriverStationJNI.getAllianceStation() == AllianceStationID.Blue2 || DriverStationJNI.getAllianceStation() == AllianceStationID.Blue3){
+                seedFieldCentric(kBlueAlliancePerspectiveRotation);
+            }
+
+            // DriverStation.getAlliance().ifPresent(allianceColor -> {
+            //     setOperatorPerspectiveForward(
+            //         allianceColor == Alliance.Red
+            //             ? kRedAlliancePerspectiveRotation
+            //             : kBlueAlliancePerspectiveRotation
+            //     );
                 m_hasAppliedOperatorPerspective = true;
-            });
+            };
+
+            
         }
-    }
+    
 
     private void startSimThread() {
         m_lastSimTime = Utils.getCurrentTimeSeconds();

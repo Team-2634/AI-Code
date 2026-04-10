@@ -8,7 +8,7 @@ public class Intake {
     public static TalonFX intakeMotor1 = new TalonFX(10);
 
        public static void intakeFoward(){
-        intakeMotor1.set(-1);
+        intakeMotor1.set(-0.4);
     }
 
     public static void intakeStop(){
