@@ -33,16 +33,16 @@ public class limelight {
     }
 
     public static double getRobotX(){
-        return getRobotY() * (Math.tan(getCamXNC() * (Math.PI/180)));
+        return getRobotY() * Math.tan(getCamXNC() * (Math.PI/180));
     }
 
     public static double getRobotY(){
-        return (limelightTagData.getTagHeight(getTagId()) - CAMERA_MOUNT_HEIGHT) / (Math.tan(getCamYNC() * (Math.PI/180))) + CAMERA_MOUNT_Y_OFFSET;
+        return (limelightTagData.getTagHeight(getTagId()) - CAMERA_MOUNT_HEIGHT) / Math.tan(getCamYNC() * (Math.PI/180)) + CAMERA_MOUNT_Y_OFFSET;
     }
 
     public static double[] getRobotPos(){
         double camY = getRobotY();
-        double camX = camY * (Math.tan(getCamXNC() * (Math.PI/180)));
+        double camX = camY * Math.tan(getCamXNC() * (Math.PI/180));
         double camYaw = mainGyro.getYaw().getValueAsDouble();
 
         double robotPosX = camX * Math.cos(camYaw) - camY * camX * Math.sin(camYaw);
