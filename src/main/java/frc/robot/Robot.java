@@ -19,14 +19,23 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+<<<<<<< Updated upstream
+=======
+import com.ctre.phoenix6.*;
+import frc.robot.LimelightHelpers;
+>>>>>>> Stashed changes
 
 public class Robot extends TimedRobot {
     private Command m_autonomousCommand;
 
     private final RobotContainer m_robotContainer;
+    private final autoTarget m_autoTarget = new autoTarget(RobotContainer.drivetrain);
 
+<<<<<<< Updated upstream
 
     private final Pigeon2 mainGryo = new Pigeon2(0);
+=======
+>>>>>>> Stashed changes
     private final XboxController Controller1 = new XboxController(0);
 
     private final HootAutoReplay m_timeAndJoystickReplay = new HootAutoReplay()
@@ -88,7 +97,12 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
 
+<<<<<<< Updated upstream
          if (Controller1.getLeftTriggerAxis() > 0.5){
+=======
+        //Controller Buttones
+    if (Controller1.getLeftTriggerAxis() > 0.5){
+>>>>>>> Stashed changes
       Shooter.shooterForwardSlow();
     }   
       else if (Controller1.getRightTriggerAxis() > 0.5){
@@ -106,6 +120,20 @@ public class Robot extends TimedRobot {
     else if(Controller1.getXButtonReleased()){
       Intake.intakeStop();
     }
+<<<<<<< Updated upstream
+=======
+
+    if (Controller1.getStartButtonPressed()){
+        RobotContainer.drivetrain.seedFieldCentric(DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue
+                 ?Rotation2d.kZero
+               :Rotation2d.fromDegrees(180));
+    }
+
+   if (Controller1.getBButton() == true){
+    m_autoTarget.targetTag();
+   }
+
+>>>>>>> Stashed changes
     }
 
     @Override
