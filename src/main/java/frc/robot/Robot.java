@@ -27,9 +27,8 @@ public class Robot extends TimedRobot {
     private Command m_autonomousCommand;
 
     private final RobotContainer m_robotContainer;
-    private final autoTarget m_AutoTarget = new autoTarget(RobotContainer.drivetrain);
+    private final autoTarget m_AutoTarget;
 
-    private final Pigeon2 mainGyro = new Pigeon2(0);
     private final XboxController Controller1 = new XboxController(0);
 
     private final HootAutoReplay m_timeAndJoystickReplay = new HootAutoReplay()
@@ -38,8 +37,9 @@ public class Robot extends TimedRobot {
 
     public Robot() {
         m_robotContainer = new RobotContainer();
-        
+        m_AutoTarget = new autoTarget(RobotContainer.drivetrain);
     }
+
 
     @Override
     public void robotPeriodic() {
@@ -128,8 +128,11 @@ public class Robot extends TimedRobot {
                :Rotation2d.fromDegrees(180));
     }
 
-    if (Controller1.getBButtonPressed()){
+    if (Controller1.getBButton()){
         m_AutoTarget.targetTag();
+        System.out.println("AUTOTARGET ON");
+    } else if (Controller1.getBButtonReleased()){
+        System.out.println("AUTOTARGET OFF");
     }
 
     }
