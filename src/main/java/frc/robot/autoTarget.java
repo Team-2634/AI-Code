@@ -26,7 +26,7 @@ public class autoTarget extends Command {
         double turnOffset = limelight.getCamXNC();
         int tagIDTarget = 9;
 
-        System.out.println("TAG ID" + tagID + " OFFSET " + turnOffset);
+        System.out.println("TAG ID: " + tagID + "| OFFSET: " + turnOffset);
 
         if (tagID == tagIDTarget) {
 
@@ -35,14 +35,14 @@ public class autoTarget extends Command {
                 m_drive.setControl(
                     m_request.withVelocityX(-joystick.getLeftY() * MaxSpeed)
                             .withVelocityY(-joystick.getLeftX() * MaxSpeed)
-                            .withRotationalRate(-0.2)
+                            .withRotationalRate(-turnOffset * kP)
                 );
             } else if (turnOffset < -1) {
                 System.out.println("TARGET TO LEFT");
                 m_drive.setControl(
                     m_request.withVelocityX(-joystick.getLeftY() * MaxSpeed)
                             .withVelocityY(-joystick.getLeftX() * MaxSpeed)
-                            .withRotationalRate(-0.2)
+                            .withRotationalRate(-turnOffset * kP)
                 );
             } else {
                 System.out.println("TARGET IS CENTERED");
