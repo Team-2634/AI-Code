@@ -40,13 +40,13 @@ public class limelight {
         return (limelightTagData.getTagHeight(getTagId()) - CAMERA_MOUNT_HEIGHT) / Math.tan(getCamYNC() * (Math.PI/180)) + CAMERA_MOUNT_Y_OFFSET;
     }
 
-    public static double[] getRobotPos(){
+    public static double[] getRobotPos(){ // Robot Postion relative to tag (inches)
         double camY = getRobotY();
         double camX = camY * Math.tan(getCamXNC() * (Math.PI/180));
-        double camYaw = mainGyro.getYaw().getValueAsDouble();
+        double camYaw = mainGyro.getYaw().getValueAsDouble() * (Math.PI/180);
 
-        double robotPosX = camX * Math.cos(camYaw) - camY * camX * Math.sin(camYaw);
-        double robotPosY = camX * Math.sin(camYaw) - camY * camX * Math.cos(camYaw);
+        double robotPosX = camX * Math.cos(camYaw) - camY * Math.sin(camYaw);
+        double robotPosY = camX * Math.sin(camYaw) + camY * Math.cos(camYaw);
 
         return new double[]{robotPosX, robotPosY};
     }
