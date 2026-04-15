@@ -16,16 +16,16 @@ public class Shooter {
     public static void shooterForwardSlow(){ // slow launcher speed
         shooterMotor1.set(0.75);
         shooterMotor2.set(0.75);
-        agitatorMotorL.set(0.05);
-        agitatorMotorR.set(-0.05);
+        agitatorMotorL.set(0.1);
+        agitatorMotorR.set(-0.1);
 
     }
 
     public static void shooterFowardFast(){ // fast launcher speed
         shooterMotor1.set(1);
         shooterMotor2.set(1);
-        agitatorMotorL.set(0.05);
-        agitatorMotorR.set(-0.05);
+        agitatorMotorL.set(0.1);
+        agitatorMotorR.set(-0.1);
     }
 
     public static void Unstuck(){

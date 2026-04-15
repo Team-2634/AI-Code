@@ -13,15 +13,21 @@ import com.ctre.phoenix6.hardware.Pigeon2.*;
 import frc.robot.*;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StructArrayPublisher;
+import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import com.ctre.phoenix6.*;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Robot extends TimedRobot {
     private Command m_autonomousCommand;
@@ -30,6 +36,14 @@ public class Robot extends TimedRobot {
 
     private final Pigeon2 mainGyro = new Pigeon2(0);
     private final XboxController Controller1 = new XboxController(0);
+    
+    Pose2d poseA = new Pose2d();
+Pose2d poseB = new Pose2d();
+
+StructPublisher<Pose2d> publisher = NetworkTableInstance.getDefault()
+  .getStructTopic("MyPose", Pose2d.struct).publish();
+StructArrayPublisher<Pose2d> arrayPublisher = NetworkTableInstance.getDefault()
+  .getStructArrayTopic("MyPoseArray", Pose2d.struct).publish();
 
     private final HootAutoReplay m_timeAndJoystickReplay = new HootAutoReplay()
         .withTimestampReplay()
@@ -44,6 +58,10 @@ public class Robot extends TimedRobot {
     public void robotPeriodic() {
         m_timeAndJoystickReplay.update();
         CommandScheduler.getInstance().run(); 
+        
+        publisher.set(poseA);
+        arrayPublisher.set(new Pose2d[] {poseA, poseB});
+       
     }
 
     @Override
@@ -71,11 +89,17 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousPeriodic() {
+        //Shooter.shooterForwardSlow();
+        //Intake.intakeFoward();
         
     }
 
     @Override
-    public void autonomousExit() {}
+    public void autonomousExit() {
+    //Shooter.shooterStop();
+    //Intake.intakeStop();
+
+    }
 
     boolean fc = false;
 
@@ -119,6 +143,15 @@ public class Robot extends TimedRobot {
     }
     else if(Controller1.getXButtonReleased()){
       Intake.intakeStop();
+    }
+
+    if (Controller1.getYButtonPressed()){
+        Shooter.Unstuck();
+        Intake.intakeReverse();
+    }
+    else if (Controller1.getYButtonReleased()){
+        Shooter.shooterStop();
+        Intake.intakeStop();
     }
 
     if (Controller1.getStartButtonPressed()){
