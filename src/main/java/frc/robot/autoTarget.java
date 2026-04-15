@@ -25,19 +25,20 @@ public class autoTarget extends Command {
         int tagID = limelight.getTagId();
         double turnOffset = limelight.getCamXNC();
         int tagIDTarget = 9;
+        double safelimit = 1.0;
 
         System.out.println("TAG ID: " + tagID + "| OFFSET: " + turnOffset);
 
         if (tagID == tagIDTarget) {
 
-            if (turnOffset > 1) {
+            if (turnOffset > safelimit) {
                 System.out.println("TARGET TO RIGHT");
                 m_drive.setControl(
                     m_request.withVelocityX(-joystick.getLeftY() * MaxSpeed)
                             .withVelocityY(-joystick.getLeftX() * MaxSpeed)
                             .withRotationalRate(-turnOffset * kP)
                 );
-            } else if (turnOffset < -1) {
+            } else if (turnOffset < -safelimit) {
                 System.out.println("TARGET TO LEFT");
                 m_drive.setControl(
                     m_request.withVelocityX(-joystick.getLeftY() * MaxSpeed)
