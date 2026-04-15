@@ -128,13 +128,6 @@ public class Robot extends TimedRobot {
                :Rotation2d.fromDegrees(180));
     }
 
-    if (Controller1.getBButton()){
-        m_AutoTarget.targetTag();
-        System.out.println("AUTOTARGET ON");
-    } else if (Controller1.getBButtonReleased()){
-        System.out.println("AUTOTARGET OFF");
-    }
-
     }
 
     @Override

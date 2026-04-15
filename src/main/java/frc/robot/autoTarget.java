@@ -15,17 +15,18 @@ public class autoTarget extends Command {
     private final CommandSwerveDrivetrain m_drive;
     private final SwerveRequest.FieldCentric m_request = new SwerveRequest.FieldCentric();
 
-    private static final double kP = 0.05; // tune this if rotation is too fast/slow
+    private static final double kP = 10.0; // tune this if rotation is too fast/slow
 
     public autoTarget(CommandSwerveDrivetrain drive) {
         m_drive = drive;
     }
 
-    public void targetTag() {
+    public void execute() {
         int tagID = limelight.getTagId();
         double turnOffset = limelight.getCamXNC();
         int tagIDTarget = 9;
-        double safelimit = 1.0;
+        double safelimit = 3.0;
+        double rotationOutput = Math.max(-0.5, Math.min(0.5, -turnOffset * kP));
 
         System.out.println("TAG ID: " + tagID + "| OFFSET: " + turnOffset);
 
@@ -34,22 +35,22 @@ public class autoTarget extends Command {
             if (turnOffset > safelimit) {
                 System.out.println("TARGET TO RIGHT");
                 m_drive.setControl(
-                    m_request.withVelocityX(-joystick.getLeftY() * MaxSpeed)
-                            .withVelocityY(-joystick.getLeftX() * MaxSpeed)
-                            .withRotationalRate(-turnOffset * kP)
+                    m_request/*.withVelocityX(-joystick.getLeftY() * MaxSpeed)
+                            .withVelocityY(-joystick.getLeftX() * MaxSpeed) */
+                            .withRotationalRate(rotationOutput)
                 );
             } else if (turnOffset < -safelimit) {
                 System.out.println("TARGET TO LEFT");
                 m_drive.setControl(
-                    m_request.withVelocityX(-joystick.getLeftY() * MaxSpeed)
-                            .withVelocityY(-joystick.getLeftX() * MaxSpeed)
-                            .withRotationalRate(-turnOffset * kP)
+                    m_request/*.withVelocityX(-joystick.getLeftY() * MaxSpeed)
+                            .withVelocityY(-joystick.getLeftX() * MaxSpeed) */
+                            .withRotationalRate(rotationOutput)
                 );
             } else {
                 System.out.println("TARGET IS CENTERED");
                 m_drive.setControl(
-                    m_request.withVelocityX(0.0)
-                            .withVelocityY(0.0)
+                    m_request/*.withVelocityX(-joystick.getLeftY() * MaxSpeed)
+                            .withVelocityY(-joystick.getLeftX() * MaxSpeed)*/
                             .withRotationalRate(0.0)
                 );
             }
