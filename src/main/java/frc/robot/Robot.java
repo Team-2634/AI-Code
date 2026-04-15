@@ -5,7 +5,7 @@
 package frc.robot;
 
 import javax.sound.midi.Sequence;
-import com.ctre.phoenix6.HootAutoReplay;
+
 import com.ctre.phoenix6.swerve.SwerveDrivetrain;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants.DriveMotorArrangement;
 import com.ctre.phoenix6.hardware.Pigeon2;
@@ -18,6 +18,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.networktables.StructPublisher;
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
@@ -61,6 +62,10 @@ StructArrayPublisher<Pose2d> arrayPublisher = NetworkTableInstance.getDefault()
         
         publisher.set(poseA);
         arrayPublisher.set(new Pose2d[] {poseA, poseB});
+
+        
+
+        System.out.println(Intake.IntakeMove.getPosition());
        
     }
 
