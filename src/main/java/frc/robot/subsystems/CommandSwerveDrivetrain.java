@@ -16,8 +16,10 @@ import edu.wpi.first.hal.DriverStationJNI;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Notifier;
@@ -26,6 +28,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.config.ModuleConfig;
+import com.pathplanner.lib.config.PIDConstants;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+
+import frc.robot.generated.TunerConstants;
 import frc.robot.generated.TunerConstants.TunerSwerveDrivetrain;
 
 /**
@@ -318,4 +327,60 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     public Optional<Pose2d> samplePoseAt(double timestampSeconds) {
         return super.samplePoseAt(Utils.fpgaToCurrentTime(timestampSeconds));
     }
+
+    private RobotConfig getRobotConfig() {
+    try {
+        return RobotConfig.fromGUISettings();
+    } catch (Exception e) {
+        e.printStackTrace();
+        // Fallback config using your robot's known specs from tuner-project.json
+        // Track width: 20.75" = 0.5271m, Wheel base: 23" = 0.5842m
+        return new RobotConfig(
+            74.088,          // robot mass kg (~163 lbs, adjust to your actual weight)
+            6.883,           // MOI (moment of inertia, tune this)
+            new ModuleConfig(
+                0.1016,      // wheel radius in meters (4" wheel = 0.1016m)
+                4.5,         // max drive speed m/s (L1 gearing estimate)
+                1.2,         // wheel COF
+                DCMotor.getKrakenX60(1).withReduction(8.142857),
+                60.0,        // drive stator current limit
+                1            // num drive motors per module
+            ),
+            // Module positions: FL, FR, BL, BR
+            new Translation2d( 0.2636,  0.2921),
+            new Translation2d( 0.2636, -0.2921),
+            new Translation2d(-0.2636,  0.2921),
+            new Translation2d(-0.2636, -0.2921)
+        );
+    }
+}
+
+private void configurePathPlanner() {
+    double driveBaseRadius = Math.hypot(
+        TunerConstants.FrontLeft.LocationX, 
+        TunerConstants.FrontLeft.LocationY
+    );
+
+    AutoBuilder.configure(
+        () -> getState().Pose,                  // Robot pose supplier
+        this::resetPose,                        // Pose reset method
+        () -> getState().Speeds,                // ChassisSpeeds supplier
+        (speeds, feedforwards) -> setControl(
+            new SwerveRequest.ApplyRobotSpeeds().withSpeeds(speeds)
+        ),
+        new PPHolonomicDriveController(
+            new PIDConstants(5.0, 0, 0),        // Translation PID
+            new PIDConstants(5.0, 0, 0)         // Rotation PID
+        ),
+        getRobotConfig(),
+        () -> {
+            // Flip path for red alliance
+            var alliance = DriverStation.getAlliance();
+            return alliance.isPresent() && 
+                   alliance.get() == DriverStation.Alliance.Red;
+        },
+        this
+    );
+}
+
 }

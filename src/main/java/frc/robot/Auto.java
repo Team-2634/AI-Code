@@ -1,102 +1,102 @@
-package frc.robot;
+// package frc.robot;
 
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj2.command.Command;
+// import edu.wpi.first.wpilibj.Timer;
+// import edu.wpi.first.wpilibj2.command.Command;
 
-import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
-import com.ctre.phoenix6.swerve.SwerveRequest;
-import frc.robot.subsystems.CommandSwerveDrivetrain;
-import frc.robot.*;
-
-
+// import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
+// import com.ctre.phoenix6.swerve.SwerveRequest;
+// import frc.robot.subsystems.CommandSwerveDrivetrain;
+// import frc.robot.*;
 
 
 
-public class Auto extends Command {
 
-    private final static CommandSwerveDrivetrain drivetrain = RobotContainer.drivetrain;
 
-    private final static SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
-            .withDeadband(0.0)
-            .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
+// public class Auto extends Command {
 
-    private final double TARGET_Y = 39.4; // 1 meter in inches
-    private final double TARGET_X = 0.0;
-    private final double TOLERANCE = 1.0; // inches
-    private final static double DRIVE_SPEED = 0.3; // meters per second
+//     private final static CommandSwerveDrivetrain drivetrain = RobotContainer.drivetrain;
 
-    public Auto() {
-        addRequirements(drivetrain);
-    }
+//     private final static SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
+//             .withDeadband(0.0)
+//             .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
 
-    @Override
-    public void execute() {
-        if (limelight.getTagId() == 9) {
-            double[] pos = limelight.getRobotPos();
-            double x = pos[0];
-            double y = pos[1];
+//     private final double TARGET_Y = 39.4; // 1 meter in inches
+//     private final double TARGET_X = 0.0;
+//     private final double TOLERANCE = 1.0; // inches
+//     private final static double DRIVE_SPEED = 0.3; // meters per second
 
-            if (y > TARGET_Y + TOLERANCE) {
-                drivetrain.applyRequest(() ->
-                    drive.withVelocityX(DRIVE_SPEED)
-                         .withVelocityY(0.0)
-                         .withRotationalRate(0.0)
-                );
-            } else if (y < TARGET_Y - TOLERANCE) {
-                drivetrain.applyRequest(() ->
-                    drive.withVelocityX(-DRIVE_SPEED)
-                         .withVelocityY(0.0)
-                         .withRotationalRate(0.0)
-                );
-            } else if (x > TARGET_X + TOLERANCE) {
-                drivetrain.applyRequest(() ->
-                    drive.withVelocityX(0.0)
-                         .withVelocityY(-DRIVE_SPEED)
-                         .withRotationalRate(0.0)
-                );
-            } else if (x < TARGET_X - TOLERANCE) {
-                drivetrain.applyRequest(() ->
-                    drive.withVelocityX(0.0)
-                         .withVelocityY(DRIVE_SPEED)
-                         .withRotationalRate(0.0)
-                );
-            }
-        }
-    }
+//     public Auto() {
+//         addRequirements(drivetrain);
+//     }
 
-    @Override
-    public boolean isFinished() {
-        if (limelight.getTagId() != 9) return false;
+//     @Override
+//     public void execute() {
+//         if (limelight.getTagId() == 9) {
+//             double[] pos = limelight.getRobotPos();
+//             double x = pos[0];
+//             double y = pos[1];
 
-        double[] pos = limelight.getRobotPos();
-        return Math.abs(pos[0] - TARGET_X) <= TOLERANCE &&
-               Math.abs(pos[1] - TARGET_Y) <= TOLERANCE;
-    }
+//             if (y > TARGET_Y + TOLERANCE) {
+//                 drivetrain.applyRequest(() ->
+//                     drive.withVelocityX(DRIVE_SPEED)
+//                          .withVelocityY(0.0)
+//                          .withRotationalRate(0.0)
+//                 );
+//             } else if (y < TARGET_Y - TOLERANCE) {
+//                 drivetrain.applyRequest(() ->
+//                     drive.withVelocityX(-DRIVE_SPEED)
+//                          .withVelocityY(0.0)
+//                          .withRotationalRate(0.0)
+//                 );
+//             } else if (x > TARGET_X + TOLERANCE) {
+//                 drivetrain.applyRequest(() ->
+//                     drive.withVelocityX(0.0)
+//                          .withVelocityY(-DRIVE_SPEED)
+//                          .withRotationalRate(0.0)
+//                 );
+//             } else if (x < TARGET_X - TOLERANCE) {
+//                 drivetrain.applyRequest(() ->
+//                     drive.withVelocityX(0.0)
+//                          .withVelocityY(DRIVE_SPEED)
+//                          .withRotationalRate(0.0)
+//                 );
+//             }
+//         }
+//     }
 
-    @Override
-    public void end(boolean interrupted) {
-        drivetrain.applyRequest(() ->
-            drive.withVelocityX(0.0)
-                 .withVelocityY(0.0)
-                 .withRotationalRate(0.0)
-        );
-    }
+//     @Override
+//     public boolean isFinished() {
+//         if (limelight.getTagId() != 9) return false;
 
-    public static void AutoFront(){
-        drivetrain.applyRequest(() ->
-                    drive.withVelocityX(DRIVE_SPEED)
-                         .withVelocityY(0.-1)
-                         .withRotationalRate(0.0)
-                );
+//         double[] pos = limelight.getRobotPos();
+//         return Math.abs(pos[0] - TARGET_X) <= TOLERANCE &&
+//                Math.abs(pos[1] - TARGET_Y) <= TOLERANCE;
+//     }
 
-        Timer.delay(2);
+//     @Override
+//     public void end(boolean interrupted) {
+//         drivetrain.applyRequest(() ->
+//             drive.withVelocityX(0.0)
+//                  .withVelocityY(0.0)
+//                  .withRotationalRate(0.0)
+//         );
+//     }
+
+//     public static void AutoFront(){
+//         drivetrain.applyRequest(() ->
+//                     drive.withVelocityX(DRIVE_SPEED)
+//                          .withVelocityY(0.-1)
+//                          .withRotationalRate(0.0)
+//                 );
+
+//         Timer.delay(2);
         
-        drivetrain.applyRequest(() ->
-                    drive.withVelocityX(DRIVE_SPEED)
-                         .withVelocityY(0.0)
-                         .withRotationalRate(0.0)
-                );
+//         drivetrain.applyRequest(() ->
+//                     drive.withVelocityX(DRIVE_SPEED)
+//                          .withVelocityY(0.0)
+//                          .withRotationalRate(0.0)
+//                 );
 
 
-    }
-}
+//     }
+// }

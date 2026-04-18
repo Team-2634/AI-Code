@@ -3,6 +3,7 @@ package frc.robot;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 
 
 public class Shooter {
@@ -49,5 +50,31 @@ public class Shooter {
         agitatorMotorL.set(0);
         agitatorMotorR.set(0);
     }
+
+    public static Command spinUpCommand() {
+    return Commands.runOnce(() -> {
+        shooterMotor1.set(1);
+        shooterMotor2.set(1);
+    });
+}
+
+public static Command feedNoteCommand() {
+    return Commands.runOnce(() -> {
+        agitatorMotorL.set(0.1);
+        agitatorMotorR.set(-0.1);
+    });
+}
+
+public Command stopCommand() {
+    return Commands.runOnce(() -> shooterStop());
+}
+
+public static Command autoShootCommand() {
+    return Commands.sequence(
+        spinUpCommand(),
+        Commands.waitSeconds(1.5),
+        feedNoteCommand()
+    );
+}
 }
 
