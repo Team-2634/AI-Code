@@ -1,10 +1,12 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.*;
 
 
 
@@ -13,16 +15,16 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 public class Auto extends Command {
 
-    private final CommandSwerveDrivetrain drivetrain = RobotContainer.drivetrain;
+    private final static CommandSwerveDrivetrain drivetrain = RobotContainer.drivetrain;
 
-    private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
+    private final static SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
             .withDeadband(0.0)
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
 
     private final double TARGET_Y = 39.4; // 1 meter in inches
     private final double TARGET_X = 0.0;
     private final double TOLERANCE = 1.0; // inches
-    private final double DRIVE_SPEED = 0.3; // meters per second
+    private final static double DRIVE_SPEED = 0.3; // meters per second
 
     public Auto() {
         addRequirements(drivetrain);
@@ -79,5 +81,23 @@ public class Auto extends Command {
                  .withVelocityY(0.0)
                  .withRotationalRate(0.0)
         );
+    }
+
+    public static void AutoFront(){
+        drivetrain.applyRequest(() ->
+                    drive.withVelocityX(DRIVE_SPEED)
+                         .withVelocityY(0.-1)
+                         .withRotationalRate(0.0)
+                );
+
+        Timer.delay(2);
+        
+        drivetrain.applyRequest(() ->
+                    drive.withVelocityX(DRIVE_SPEED)
+                         .withVelocityY(0.0)
+                         .withRotationalRate(0.0)
+                );
+
+
     }
 }

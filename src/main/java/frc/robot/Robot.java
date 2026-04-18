@@ -21,6 +21,7 @@ import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -94,15 +95,15 @@ StructArrayPublisher<Pose2d> arrayPublisher = NetworkTableInstance.getDefault()
 
     @Override
     public void autonomousPeriodic() {
-        //Shooter.shooterForwardSlow();
-        //Intake.intakeFoward();
+        Shooter.shooterForwardSlow();
+        Intake.intakeFoward();
         
     }
 
     @Override
     public void autonomousExit() {
-    //Shooter.shooterStop();
-    //Intake.intakeStop();
+    Shooter.shooterStop();
+    Intake.intakeStop();
 
     }
 
@@ -127,7 +128,9 @@ StructArrayPublisher<Pose2d> arrayPublisher = NetworkTableInstance.getDefault()
 
     @Override
     public void teleopPeriodic() {
-    System.out.println(fc);
+    System.out.println("FUCK");
+    Timer.delay(2);
+    System.out.println("ME");
 
         //Controller Buttones
          if (Controller1.getLeftTriggerAxis() > 0.5){

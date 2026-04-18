@@ -15,7 +15,6 @@ public class Intake {
 
     public static double intakeUpDOwnPosition(){
         return IntakeMove.getPosition().getValueAsDouble();
-    
     }
 
     
