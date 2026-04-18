@@ -12,7 +12,6 @@ import frc.robot.*;
 
 
 
-
 public class Auto extends Command {
 
     private final static CommandSwerveDrivetrain drivetrain = RobotContainer.drivetrain;
