@@ -30,6 +30,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import com.ctre.phoenix6.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.HttpCamera;
 
 public class Robot extends TimedRobot {
     private Command m_autonomousCommand;
@@ -54,6 +56,11 @@ StructArrayPublisher<Pose2d> arrayPublisher = NetworkTableInstance.getDefault()
     public Robot() {
         m_robotContainer = new RobotContainer();
         
+        HttpCamera limelightCamera = new HttpCamera(
+        "limelight",
+        "http://limelight.local:5800"
+    );
+    CameraServer.startAutomaticCapture(limelightCamera);
     }
 
     @Override
@@ -64,9 +71,7 @@ StructArrayPublisher<Pose2d> arrayPublisher = NetworkTableInstance.getDefault()
         publisher.set(poseA);
         arrayPublisher.set(new Pose2d[] {poseA, poseB});
 
-        
-
-        System.out.println(Intake.IntakeMove.getPosition());
+        SmartDashboard.putString("CameraServer/limelight", "http://limelight.local:5800");
        
     }
 
@@ -81,30 +86,23 @@ StructArrayPublisher<Pose2d> arrayPublisher = NetworkTableInstance.getDefault()
 
     @Override
     public void autonomousInit() {
+          m_autonomousCommand = RobotContainer.getAutonomousCommand();
 
-
-        if (m_autonomousCommand != null) {
-            m_autonomousCommand.schedule();
-            SmartDashboard.putString("run","code is running");
-            System.out.print("[DEBUG] autonomous init starting.");
-
-        }            
-        System.out.print("[DEBUG] autonomous init ran.");
+    if (m_autonomousCommand != null) {
+        m_autonomousCommand.schedule();
+        System.out.println("[DEBUG] Auto command scheduled: " + m_autonomousCommand.getName());
+    } else {
+        System.out.println("[DEBUG] Auto command is NULL");
+    }
 
     }
 
     @Override
     public void autonomousPeriodic() {
-        Shooter.shooterForwardSlow();
-        Intake.intakeFoward();
-        
     }
 
     @Override
     public void autonomousExit() {
-    Shooter.shooterStop();
-    Intake.intakeStop();
-
     }
 
     boolean fc = false;
@@ -128,9 +126,6 @@ StructArrayPublisher<Pose2d> arrayPublisher = NetworkTableInstance.getDefault()
 
     @Override
     public void teleopPeriodic() {
-    System.out.println("FUCK");
-    Timer.delay(2);
-    System.out.println("ME");
 
         //Controller Buttones
          if (Controller1.getLeftTriggerAxis() > 0.5){

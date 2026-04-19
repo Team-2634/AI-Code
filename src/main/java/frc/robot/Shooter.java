@@ -25,15 +25,15 @@ public class Shooter {
     public static void shooterFowardFast(){ // fast launcher speed
         shooterMotor1.set(1);
         shooterMotor2.set(1);
-        agitatorMotorL.set(0.1);
-        agitatorMotorR.set(-0.1);
+        agitatorMotorL.set(0.05);
+        agitatorMotorR.set(-0.05);
     }
 
     public static void Unstuck(){
         shooterMotor1.set(-0.2);
         shooterMotor2.set(-0.2);
-        agitatorMotorL.set(-0.1);
-        agitatorMotorR.set(0.1);
+        agitatorMotorL.set(-0.05);
+        agitatorMotorR.set(0.05);
 
 
     }
@@ -60,8 +60,8 @@ public class Shooter {
 
 public static Command feedNoteCommand() {
     return Commands.runOnce(() -> {
-        agitatorMotorL.set(0.1);
-        agitatorMotorR.set(-0.1);
+        agitatorMotorL.set(0.05);
+        agitatorMotorR.set(-0.05);
     });
 }
 
