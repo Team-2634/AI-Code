@@ -33,8 +33,6 @@ public class Shooter {
         shooterMotor2.set(-0.2);
         agitatorMotorL.set(-0.1);
         agitatorMotorR.set(0.1);
-
-
     }
     
     public static double shooterFowardcustom(double speed){ // custom launcher speed
@@ -48,6 +46,10 @@ public class Shooter {
         shooterMotor2.set(0);
         agitatorMotorL.set(0);
         agitatorMotorR.set(0);
+    }
+
+    public static void Diddy(){
+        System.out.println("I buy baby oil in mass bulk");
     }
 }
 

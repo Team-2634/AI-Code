@@ -63,9 +63,6 @@ StructArrayPublisher<Pose2d> arrayPublisher = NetworkTableInstance.getDefault()
         publisher.set(poseA);
         arrayPublisher.set(new Pose2d[] {poseA, poseB});
 
-        
-
-        System.out.println(Intake.IntakeMove.getPosition());
        
     }
 
@@ -122,12 +119,10 @@ StructArrayPublisher<Pose2d> arrayPublisher = NetworkTableInstance.getDefault()
         if (m_autonomousCommand != null) {
             CommandScheduler.getInstance().cancel(m_autonomousCommand);
         }
-    System.out.println(fc);
     }
 
     @Override
     public void teleopPeriodic() {
-    System.out.println(fc);
 
         //Controller Buttones
          if (Controller1.getLeftTriggerAxis() > 0.5){
@@ -159,12 +154,22 @@ StructArrayPublisher<Pose2d> arrayPublisher = NetworkTableInstance.getDefault()
         Intake.intakeStop();
     }
 
-    if (Controller1.getStartButtonPressed()){
-        RobotContainer.drivetrain.seedFieldCentric(DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue
-                 ?Rotation2d.kZero
-               :Rotation2d.fromDegrees(180));
+    if (Controller1.getRightBumperButtonPressed()){
+        Intake.intakeDirectionUp();
+    }
+    if (Controller1.getLeftBumperButtonPressed()){
+        Intake.intakeDirectionDown();
+    }
+    if (Controller1.getStartButton()){
+        Intake.intakeDirectionStop();
     }
 
+    if (Controller1.getLeftStickButtonPressed()){
+    }
+
+    if (Controller1.getBButton()){
+        Shooter.Diddy();
+    }
     }
 
     @Override

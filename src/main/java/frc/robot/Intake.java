@@ -34,8 +34,8 @@ public class Intake {
 
 
     public static void intakeDirectionUp(){
-    IntakeMove.set(0.3);
-    if ((intakeUpDOwnPosition()) <= 0.144){
+    IntakeMove.set(1);
+    if ((intakeUpDOwnPosition()) >= 0.144){
         IntakeMove.set(0);
     }
 
@@ -44,8 +44,11 @@ public class Intake {
          IntakeMove.set(-0.3);
 
         if ((intakeUpDOwnPosition()) <= 0.479){
-             IntakeMove.set(0);
+             IntakeMove.set(1);
         }
     }
     
+    public static void intakeDirectionStop(){
+        IntakeMove.set(0);
+    }
 }
