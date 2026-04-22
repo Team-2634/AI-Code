@@ -15,7 +15,7 @@ public class autoTarget extends Command {
     private final CommandSwerveDrivetrain m_drive;
     private final SwerveRequest.FieldCentric m_request = new SwerveRequest.FieldCentric();
 
-    private static final double kP = 10.0; // tune this if rotation is too fast/slow
+    private static final double kP = 20.0; // tune this if rotation is too fast/slow
 
     public autoTarget(CommandSwerveDrivetrain drive) {
         m_drive = drive;
@@ -35,22 +35,22 @@ public class autoTarget extends Command {
             if (turnOffset > safelimit) {
                 System.out.println("TARGET TO RIGHT");
                 m_drive.setControl(
-                    m_request/*.withVelocityX(-joystick.getLeftY() * MaxSpeed)
-                            .withVelocityY(-joystick.getLeftX() * MaxSpeed) */
+                    m_request.withVelocityX(-joystick.getLeftY() * MaxSpeed)
+                            .withVelocityY(-joystick.getLeftX() * MaxSpeed)
                             .withRotationalRate(rotationOutput)
                 );
             } else if (turnOffset < -safelimit) {
                 System.out.println("TARGET TO LEFT");
                 m_drive.setControl(
-                    m_request/*.withVelocityX(-joystick.getLeftY() * MaxSpeed)
-                            .withVelocityY(-joystick.getLeftX() * MaxSpeed) */
+                    m_request.withVelocityX(-joystick.getLeftY() * MaxSpeed)
+                            .withVelocityY(-joystick.getLeftX() * MaxSpeed)
                             .withRotationalRate(rotationOutput)
                 );
             } else {
                 System.out.println("TARGET IS CENTERED");
                 m_drive.setControl(
-                    m_request/*.withVelocityX(-joystick.getLeftY() * MaxSpeed)
-                            .withVelocityY(-joystick.getLeftX() * MaxSpeed)*/
+                    m_request.withVelocityX(-joystick.getLeftY() * MaxSpeed)
+                            .withVelocityY(-joystick.getLeftX() * MaxSpeed)
                             .withRotationalRate(0.0)
                 );
             }
