@@ -18,7 +18,6 @@ public class Shooter {
         shooterMotor2.set(0.75);
         agitatorMotorL.set(0.05);
         agitatorMotorR.set(-0.05);
-
     }
 
     public static void shooterForwardFast(){ // fast launcher speed
@@ -33,8 +32,6 @@ public class Shooter {
         shooterMotor2.set(-0.2);
         agitatorMotorL.set(-0.1);
         agitatorMotorR.set(0.1);
-
-
     }
     
     public static double shooterForwardcustom(double speed){ // custom launcher speed
