@@ -6,10 +6,16 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 
 public class limelight {
 
+    private static final String NAME = "limelight";
+    private final NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
 
     static double CAMERA_MOUNT_HEIGHT = 18.5; // The height of the camera from the ground (inches)
     static double CAMERA_MOUNT_Y_OFFSET = 4.5; // Y offset of camera from center of robot (inches)
     static double CAMERA_MOUNT_ANGLE = 0.0; // The angle at which the camera is mounted (degrees)
+
+    public static void updateDashbaord(){
+        
+    }
 
     public static double getCamYaw(){
         return RobotContainer.mainGyro.getYaw().getValueAsDouble();
